@@ -1,11 +1,14 @@
 package com.rhonn.RhonnRealEstateAPI.controller;
 
-import com.rhonn.RhonnRealEstateAPI.ApiResponse;
+import com.rhonn.RhonnRealEstateAPI.dto.ApiListResponse;
+import com.rhonn.RhonnRealEstateAPI.dto.ApiObjectResponse;
 import com.rhonn.RhonnRealEstateAPI.dto.PropertyDTO;
 import com.rhonn.RhonnRealEstateAPI.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/properties")
@@ -30,7 +33,7 @@ public class PropertyController {
      * @return the list of all properties
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<PropertyDTO>> getProperties() {
+    public ApiListResponse<PropertyDTO> getProperties() {
 
         return service.getAllProperties();
     }
@@ -41,7 +44,7 @@ public class PropertyController {
      * @return the property or an exception if not found
      */
     @GetMapping("/{propId}")
-    public ResponseEntity<PropertyDTO> getPropertyById(@PathVariable String propId) {
+    public ApiObjectResponse<Object> getPropertyById(@PathVariable String propId) {
 
         return service.getPropertyById(propId);
     }

@@ -1,6 +1,7 @@
 package com.rhonn.RhonnRealEstateAPI.service.implementation;
 
-import com.rhonn.RhonnRealEstateAPI.ApiResponse;
+import com.rhonn.RhonnRealEstateAPI.dto.ApiListResponse;
+import com.rhonn.RhonnRealEstateAPI.dto.ApiObjectResponse;
 import com.rhonn.RhonnRealEstateAPI.dto.PropertyDTO;
 import com.rhonn.RhonnRealEstateAPI.exception.ResourceNotFoundException;
 import com.rhonn.RhonnRealEstateAPI.mapper.PropertyMapper;
@@ -13,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,14 +41,12 @@ public class PropertyServiceImpl implements PropertyService {
      * Gets all properties
      * @return an object with message, number of all properties and the list of properties
      */
-    public ResponseEntity<ApiResponse<PropertyDTO>> getAllProperties() {
+    public ApiListResponse<PropertyDTO> getAllProperties() {
 
         List<Property> allProps = propertyRepo.findAll();
         List<PropertyDTO> propsDTOList = allProps.stream().map(PropertyMapper::mapToPropDTO)
                 .collect(Collectors.toList());
-        ApiResponse<PropertyDTO> response = new ApiResponse<>("success", propsDTOList.size(), propsDTOList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ApiListResponse<>("success", HttpStatus.OK, propsDTOList.size(), propsDTOList);
     }
 
     /**
@@ -57,13 +54,13 @@ public class PropertyServiceImpl implements PropertyService {
      * @param propId the id of property to find
      * @return the response with the property or a ResourceNotFoundException is thrown
      */
-    public ResponseEntity<PropertyDTO> getPropertyById(String propId) {
+    public ApiObjectResponse<Object> getPropertyById(String propId) {
 
         Property prop = propertyRepo.findById(propId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property does not exist with the given id: " + propId));
         PropertyDTO propDto = PropertyMapper.mapToPropDTO(prop);
 
-        return new ResponseEntity<>(propDto, HttpStatus.OK);
+        return new ApiObjectResponse<>("success", HttpStatus.OK, propDto);
     }
 
     /**
