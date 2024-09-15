@@ -30,7 +30,7 @@ public class PropertyController
      * @return the created property
      */
     @PostMapping
-    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyDTO propertyDTO)
+    public ResponseEntity<ApiObjectResponse<PropertyDTO>> createProperty(@RequestBody PropertyDTO propertyDTO)
     {
 
         return service.createProperty(propertyDTO);
@@ -42,7 +42,7 @@ public class PropertyController
      * @return the list of all properties
      */
     @GetMapping
-    public ApiListResponse<PropertyDTO> getProperties()
+    public ResponseEntity<ApiListResponse<PropertyDTO>> getProperties()
     {
 
         return service.getAllProperties();
@@ -55,7 +55,7 @@ public class PropertyController
      * @return the property or an exception if not found
      */
     @GetMapping("/{propId}")
-    public ApiObjectResponse<Object> getPropertyById(@PathVariable String propId)
+    public ResponseEntity<ApiObjectResponse<PropertyDTO>> getPropertyById(@PathVariable String propId)
     {
 
         return service.getPropertyById(propId);
@@ -69,7 +69,7 @@ public class PropertyController
      * @return the updated property or an exception
      */
     @PutMapping("/{propId}")
-    public ResponseEntity<PropertyDTO> updateProperty(@PathVariable String propId, @RequestBody PropertyDTO prop)
+    public ResponseEntity<ApiObjectResponse<PropertyDTO>> updateProperty(@PathVariable String propId, @RequestBody PropertyDTO prop)
     {
 
         return service.updateProperty(propId, prop);

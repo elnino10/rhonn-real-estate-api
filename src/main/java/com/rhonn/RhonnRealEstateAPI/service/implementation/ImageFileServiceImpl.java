@@ -7,6 +7,7 @@ import com.rhonn.RhonnRealEstateAPI.repo.ImageFileRepo;
 import com.rhonn.RhonnRealEstateAPI.service.ImageFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,15 +28,16 @@ public class ImageFileServiceImpl
      * @throws IOException thrown exception
      */
     @Override
-    public ApiObjectResponse<Object> saveImageFile(MultipartFile imageFile)
+    public ResponseEntity<ApiObjectResponse<Object>> saveImageFile(MultipartFile imageFile)
             throws IOException
     {
 
         ImageFile file = new ImageFile();
         file.setFile(imageFile.getBytes());
         imageFileRepo.save(file);
+        ApiObjectResponse<Object> response = new ApiObjectResponse<>("success", HttpStatus.CREATED, file.getFileId());
 
-        return new ApiObjectResponse<>("success", HttpStatus.CREATED, file.getFileId());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     /**

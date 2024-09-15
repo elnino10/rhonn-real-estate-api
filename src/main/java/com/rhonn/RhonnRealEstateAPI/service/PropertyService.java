@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 public interface PropertyService
 {
 
-    ResponseEntity<PropertyDTO> createProperty(PropertyDTO propertyDTO);
+    ResponseEntity<ApiObjectResponse<PropertyDTO>> createProperty(PropertyDTO propertyDTO);
 
-    ApiListResponse<PropertyDTO> getAllProperties();
+    ResponseEntity<ApiListResponse<PropertyDTO>> getAllProperties();
 
-    ApiObjectResponse<Object> getPropertyById(String propId);
+    ResponseEntity<ApiObjectResponse<PropertyDTO>> getPropertyById(String propId);
 
-    ResponseEntity<PropertyDTO> updateProperty(String propId, PropertyDTO prop);
+    ResponseEntity<ApiObjectResponse<PropertyDTO>> updateProperty(String propId, PropertyDTO prop);
 
     void deleteProperty(String propId);
 }

@@ -4,6 +4,7 @@ import com.rhonn.RhonnRealEstateAPI.dto.ApiObjectResponse;
 import com.rhonn.RhonnRealEstateAPI.model.ImageFile;
 import com.rhonn.RhonnRealEstateAPI.service.ImageFileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class ImageFileController
      * @throws IOException exception
      */
     @PostMapping("/upload")
-    public ApiObjectResponse<Object> saveImage(@RequestBody MultipartFile imageFile)
+    public ResponseEntity<ApiObjectResponse<Object>> saveImage(@RequestBody MultipartFile imageFile)
             throws IOException
     {
 

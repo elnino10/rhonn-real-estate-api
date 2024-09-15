@@ -31,13 +31,14 @@ public class PropertyServiceImpl
      * @param propertyDTO the information to create property with
      * @return the created property
      */
-    public ResponseEntity<PropertyDTO> createProperty(PropertyDTO propertyDTO)
+    public ResponseEntity<ApiObjectResponse<PropertyDTO>> createProperty(PropertyDTO propertyDTO)
     {
 
         Property prop = PropertyMapper.mapToProperty(propertyDTO);
         PropertyDTO savedProp = PropertyMapper.mapToPropDTO(propertyRepo.save(prop));
+        ApiObjectResponse<PropertyDTO> response = new ApiObjectResponse<>("success", HttpStatus.CREATED, savedProp);
 
-        return new ResponseEntity<>(savedProp, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     /**
@@ -45,13 +46,15 @@ public class PropertyServiceImpl
      *
      * @return an object with message, number of all properties and the list of properties
      */
-    public ApiListResponse<PropertyDTO> getAllProperties()
+    public ResponseEntity<ApiListResponse<PropertyDTO>> getAllProperties()
     {
 
         List<Property> allProps = propertyRepo.findAll();
         List<PropertyDTO> propsDTOList = allProps.stream().map(PropertyMapper::mapToPropDTO)
                 .collect(Collectors.toList());
-        return new ApiListResponse<>("success", HttpStatus.OK, propsDTOList.size(), propsDTOList);
+        ApiListResponse<PropertyDTO> response = new ApiListResponse<>("success", HttpStatus.OK, propsDTOList.size(), propsDTOList);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -60,14 +63,15 @@ public class PropertyServiceImpl
      * @param propId the id of property to find
      * @return the response with the property or a ResourceNotFoundException is thrown
      */
-    public ApiObjectResponse<Object> getPropertyById(String propId)
+    public ResponseEntity<ApiObjectResponse<PropertyDTO>> getPropertyById(String propId)
     {
 
         Property prop = propertyRepo.findById(propId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property does not exist with the given id: " + propId));
         PropertyDTO propDto = PropertyMapper.mapToPropDTO(prop);
+        ApiObjectResponse<PropertyDTO> response = new ApiObjectResponse<>("success", HttpStatus.OK, propDto);
 
-        return new ApiObjectResponse<>("success", HttpStatus.OK, propDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -78,7 +82,7 @@ public class PropertyServiceImpl
      * @return returns response object of the updated property
      * or null if property with propId is not found
      */
-    public ResponseEntity<PropertyDTO> updateProperty(String propId, PropertyDTO updatedPropDto)
+    public ResponseEntity<ApiObjectResponse<PropertyDTO>> updateProperty(String propId, PropertyDTO updatedPropDto)
     {
 
         Property prop = propertyRepo.findById(propId)
@@ -123,8 +127,10 @@ public class PropertyServiceImpl
             prop.setUpdatedAt(updatedProp.getUpdatedAt());
         }
         propertyRepo.save(prop);
+        PropertyDTO updatedPropDTO = PropertyMapper.mapToPropDTO(prop);
+        ApiObjectResponse<PropertyDTO> response = new ApiObjectResponse<>("success", HttpStatus.CREATED, updatedPropDTO);
 
-        return new ResponseEntity<>(PropertyMapper.mapToPropDTO(prop), HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     /**
