@@ -8,11 +8,13 @@ import java.util.List;
 
 /**
  * Class for custom response of objects array
+ *
  * @param <T> dynamic object type
  */
 @Getter
 @Setter
-public class ApiListResponse<T> {
+public class ApiListResponse<T>
+{
 
     private String message;
     private HttpStatus status;
@@ -21,12 +23,14 @@ public class ApiListResponse<T> {
 
     /**
      * Constructor for the ApiListResponse class
+     *
      * @param message custom response message
      * @param status response HTTP status
      * @param count number of objects in the returned data
      * @param data the array of objects
      */
-    public ApiListResponse(String message, HttpStatus status, int count, List<T> data) {
+    public ApiListResponse(String message, HttpStatus status, int count, List<T> data)
+    {
         this.message = message;
         this.status = status;
         this.count = count;

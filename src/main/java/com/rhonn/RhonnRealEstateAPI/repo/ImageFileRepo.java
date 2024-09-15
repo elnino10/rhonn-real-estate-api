@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ImageFileRepo extends JpaRepository<ImageFile, String> {
+public interface ImageFileRepo
+        extends JpaRepository<ImageFile, String>
+{
 }

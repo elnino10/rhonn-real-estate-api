@@ -1,18 +1,18 @@
 package com.rhonn.RhonnRealEstateAPI.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class ImageFile {
+public class ImageFile
+{
 
     @Id
     private String fileId = UUID.randomUUID().toString();

@@ -2,7 +2,6 @@ package com.rhonn.RhonnRealEstateAPI.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -16,8 +15,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class Property {
-
+public class Property
+{
 
     @Id
     private String propId = UUID.randomUUID().toString();
@@ -35,13 +34,15 @@ public class Property {
     private LocalDateTime updatedAt = LocalDateTime.now();
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public Property() {
+    public Property()
+    {
     }
 
     public Property(String propName, BigDecimal price, String description,
-                    String address, String city, String state, String propImage,
-                    List<String> detailImages, List<String> features,
-                    PropCategory category, PropType type) {
+            String address, String city, String state, String propImage,
+            List<String> detailImages, List<String> features,
+            PropCategory category, PropType type)
+    {
         this.propId = getPropId();
         this.propName = propName;
         this.price = price;
@@ -59,7 +60,8 @@ public class Property {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Property{" +
                 "propId='" + propId + '\'' +
                 ", propName='" + propName + '\'' +

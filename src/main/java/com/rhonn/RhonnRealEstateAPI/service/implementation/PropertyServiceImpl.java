@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PropertyServiceImpl implements PropertyService {
+public class PropertyServiceImpl
+        implements PropertyService
+{
 
     @Autowired
     private PropertyRepo propertyRepo;
@@ -29,7 +31,8 @@ public class PropertyServiceImpl implements PropertyService {
      * @param propertyDTO the information to create property with
      * @return the created property
      */
-    public ResponseEntity<PropertyDTO> createProperty(PropertyDTO propertyDTO) {
+    public ResponseEntity<PropertyDTO> createProperty(PropertyDTO propertyDTO)
+    {
 
         Property prop = PropertyMapper.mapToProperty(propertyDTO);
         PropertyDTO savedProp = PropertyMapper.mapToPropDTO(propertyRepo.save(prop));
@@ -39,9 +42,11 @@ public class PropertyServiceImpl implements PropertyService {
 
     /**
      * Gets all properties
+     *
      * @return an object with message, number of all properties and the list of properties
      */
-    public ApiListResponse<PropertyDTO> getAllProperties() {
+    public ApiListResponse<PropertyDTO> getAllProperties()
+    {
 
         List<Property> allProps = propertyRepo.findAll();
         List<PropertyDTO> propsDTOList = allProps.stream().map(PropertyMapper::mapToPropDTO)
@@ -51,10 +56,12 @@ public class PropertyServiceImpl implements PropertyService {
 
     /**
      * Gets a specific property by its id
+     *
      * @param propId the id of property to find
      * @return the response with the property or a ResourceNotFoundException is thrown
      */
-    public ApiObjectResponse<Object> getPropertyById(String propId) {
+    public ApiObjectResponse<Object> getPropertyById(String propId)
+    {
 
         Property prop = propertyRepo.findById(propId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property does not exist with the given id: " + propId));
@@ -69,9 +76,10 @@ public class PropertyServiceImpl implements PropertyService {
      * @param propId id of property to be updated
      * @param updatedPropDto data fields to be updated
      * @return returns response object of the updated property
-     *         or null if property with propId is not found
+     * or null if property with propId is not found
      */
-    public ResponseEntity<PropertyDTO> updateProperty(String propId, PropertyDTO updatedPropDto) {
+    public ResponseEntity<PropertyDTO> updateProperty(String propId, PropertyDTO updatedPropDto)
+    {
 
         Property prop = propertyRepo.findById(propId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property does not exist with the given id: " + propId));
@@ -121,9 +129,11 @@ public class PropertyServiceImpl implements PropertyService {
 
     /**
      * Deletes a property with the id propId
+     *
      * @param propId the identifier of the property to be deleted
      */
-    public void deleteProperty(@PathVariable String propId) {
+    public void deleteProperty(@PathVariable String propId)
+    {
 
         Property prop = propertyRepo.findById(propId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property does not exist with the given id: " + propId));

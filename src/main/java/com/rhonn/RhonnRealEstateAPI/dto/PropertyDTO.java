@@ -15,7 +15,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PropertyDTO {
+public class PropertyDTO
+{
 
     private String propId;
     private String propName;

@@ -5,9 +5,8 @@ import com.rhonn.RhonnRealEstateAPI.dto.ApiObjectResponse;
 import com.rhonn.RhonnRealEstateAPI.dto.PropertyDTO;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
-public interface PropertyService {
+public interface PropertyService
+{
 
     ResponseEntity<PropertyDTO> createProperty(PropertyDTO propertyDTO);
 
