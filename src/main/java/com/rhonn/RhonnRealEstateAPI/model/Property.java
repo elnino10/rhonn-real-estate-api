@@ -2,16 +2,15 @@ package com.rhonn.RhonnRealEstateAPI.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Component
 @Entity
 @Getter
 @Setter
@@ -19,15 +18,15 @@ public class Property
 {
 
     @Id
-    private String propId = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
     private String propName;
     private BigDecimal price;
     private String description;
     private String address;
     private String city;
     private String state;
-    private String propImage;
-    private List<String> detailImages;
+    @OneToMany(mappedBy = "prop")
+    private List<ImageFile> propImages;
     private List<String> features;
     private PropCategory category;
     private PropType type;
@@ -39,19 +38,17 @@ public class Property
     }
 
     public Property(String propName, BigDecimal price, String description,
-            String address, String city, String state, String propImage,
-            List<String> detailImages, List<String> features,
-            PropCategory category, PropType type)
+            String address, String city, String state, List<ImageFile> propImages,
+            List<String> features, PropCategory category, PropType type)
     {
-        this.propId = getPropId();
+        this.id = getId();
         this.propName = propName;
         this.price = price;
         this.description = description;
         this.address = address;
         this.city = city;
         this.state = state;
-        this.propImage = propImage;
-        this.detailImages = detailImages;
+        this.propImages = propImages;
         this.features = features;
         this.category = category;
         this.type = type;
@@ -63,15 +60,14 @@ public class Property
     public String toString()
     {
         return "Property{" +
-                "propId='" + propId + '\'' +
+                "id='" + id + '\'' +
                 ", propName='" + propName + '\'' +
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
-                ", propImage='" + propImage + '\'' +
-                ", detailImages=" + detailImages +
+                ", propImages=" + propImages +
                 ", features=" + features +
                 ", category=" + category +
                 ", type=" + type +

@@ -16,15 +16,14 @@ public class PropertyMapper
     {
 
         return new PropertyDTO(
-                property.getPropId(),
+                property.getId(),
                 property.getPropName(),
                 property.getPrice(),
                 property.getDescription(),
                 property.getAddress(),
                 property.getCity(),
                 property.getState(),
-                property.getPropImage(),
-                property.getDetailImages(),
+                property.getPropImages(),
                 property.getFeatures(),
                 property.getCategory(),
                 property.getType(),
@@ -49,8 +48,7 @@ public class PropertyMapper
                 propertyDTO.getAddress(),
                 propertyDTO.getCity(),
                 propertyDTO.getState(),
-                propertyDTO.getPropImage(),
-                propertyDTO.getDetailImages(),
+                propertyDTO.getPropImages(),
                 propertyDTO.getFeatures(),
                 propertyDTO.getCategory(),
                 propertyDTO.getType()

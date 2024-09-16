@@ -108,11 +108,8 @@ public class PropertyServiceImpl
         if (updatedProp.getState() != null) {
             prop.setState(updatedProp.getState());
         }
-        if (updatedProp.getPropImage() != null) {
-            prop.setPropImage(updatedProp.getPropImage());
-        }
-        if (updatedProp.getDetailImages() != null) {
-            prop.setDetailImages(updatedProp.getDetailImages());
+        if (updatedProp.getPropImages() != null) {
+            prop.setPropImages(updatedProp.getPropImages());
         }
         if (updatedProp.getFeatures() != null) {
             prop.setFeatures(updatedProp.getFeatures());
@@ -141,8 +138,8 @@ public class PropertyServiceImpl
     public void deleteProperty(@PathVariable String propId)
     {
 
-        Property prop = propertyRepo.findById(propId)
+        propertyRepo.findById(propId)
                 .orElseThrow(() -> new ResourceNotFoundException("Property does not exist with the given id: " + propId));
-        propertyRepo.deleteById(prop.getPropId());
+        propertyRepo.deleteById(propId);
     }
 }

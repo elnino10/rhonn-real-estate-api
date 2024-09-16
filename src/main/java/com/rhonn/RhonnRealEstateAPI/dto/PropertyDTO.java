@@ -1,5 +1,6 @@
 package com.rhonn.RhonnRealEstateAPI.dto;
 
+import com.rhonn.RhonnRealEstateAPI.model.ImageFile;
 import com.rhonn.RhonnRealEstateAPI.model.PropCategory;
 import com.rhonn.RhonnRealEstateAPI.model.PropType;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,7 @@ public class PropertyDTO
     private String address;
     private String city;
     private String state;
-    private String propImage;
-    private List<String> detailImages;
+    private List<ImageFile> propImages;
     private List<String> features;
     private PropCategory category;
     private PropType type;

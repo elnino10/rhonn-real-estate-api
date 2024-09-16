@@ -1,8 +1,8 @@
 package com.rhonn.RhonnRealEstateAPI.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +15,9 @@ public class ImageFile
 {
 
     @Id
-    private String fileId = UUID.randomUUID().toString();
-
-    @Column(columnDefinition = "BYTEA")
-    private byte[] file;
+    private String id = UUID.randomUUID().toString();
+    @ManyToOne
+    private Property prop;
+    private ImageCategory imageCategory;
+    private String imageUrl;
 }
