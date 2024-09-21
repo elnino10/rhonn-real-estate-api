@@ -36,6 +36,10 @@ public class PropertyServiceImpl
 
         Property prop = PropertyMapper.mapToProperty(propertyDTO);
         PropertyDTO savedProp = PropertyMapper.mapToPropDTO(propertyRepo.save(prop));
+        String propId = savedProp.getId();
+
+        // call function that takes propId, urls of mainImage and propImages and sets them to savedProp
+
         ApiObjectResponse<PropertyDTO> response = new ApiObjectResponse<>("success", HttpStatus.CREATED, savedProp);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);

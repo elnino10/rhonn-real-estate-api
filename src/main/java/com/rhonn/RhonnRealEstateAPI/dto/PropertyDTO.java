@@ -19,14 +19,15 @@ import java.util.List;
 public class PropertyDTO
 {
 
-    private String propId;
+    private String id;
     private String propName;
     private BigDecimal price;
     private String description;
     private String address;
     private String city;
     private String state;
-    private List<ImageFile> propImages;
+    private String mainImage;
+    private List<String> propImages;
     private List<String> features;
     private PropCategory category;
     private PropType type;

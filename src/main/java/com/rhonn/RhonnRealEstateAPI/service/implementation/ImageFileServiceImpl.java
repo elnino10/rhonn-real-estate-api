@@ -1,17 +1,18 @@
 package com.rhonn.RhonnRealEstateAPI.service.implementation;
 
-import com.rhonn.RhonnRealEstateAPI.dto.ApiObjectResponse;
-import com.rhonn.RhonnRealEstateAPI.exception.ResourceNotFoundException;
+import com.amazonaws.services.s3.AmazonS3;
 import com.rhonn.RhonnRealEstateAPI.model.ImageFile;
 import com.rhonn.RhonnRealEstateAPI.repo.ImageFileRepo;
 import com.rhonn.RhonnRealEstateAPI.service.ImageFileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ImageFileServiceImpl
@@ -21,36 +22,88 @@ public class ImageFileServiceImpl
     @Autowired
     ImageFileRepo imageFileRepo;
 
+    @Autowired
+    AmazonS3 s3Client;
+
+    @Value("${aws.s3.bucket.name}")
+    private String bucketName;
+
     /**
-     * Saves image file to database
+     * Saves main image file to cloud storage
      *
      * @param imageFile file to be stored in database
-     * @throws IOException thrown exception
+     * @return url of the uploaded file
+     * @throws IOException i/o exception
      */
     @Override
-    public ResponseEntity<ApiObjectResponse<Object>> saveImageFile(MultipartFile imageFile)
+    public String saveMainImage(MultipartFile imageFile)
             throws IOException
     {
-        return null;
 
-//        ImageFile file = new ImageFile();
-//        file.setFile(imageFile.getBytes());
-//        imageFileRepo.save(file);
-//        ApiObjectResponse<Object> response = new ApiObjectResponse<>("success", HttpStatus.CREATED, file.getFileId());
-//
-//        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        String fileUrl = uploadToS3Bucket(imageFile);
+        ImageFile image = new ImageFile();
+        image.setImageUrl(fileUrl);
+        imageFileRepo.save(image);  // save image to database
+
+        return fileUrl;
     }
 
     /**
-     * Downloads image file from database
-     *
-     * @param fileId the identifier of image to download
-     * @return the image file or a ResourceNotFoundException if not found
+     * Saves other images to cloud storage
+     * @param files the list files to be saved
+     * @return the list of urls for uploaded files
+     * @throws IOException i/o exception
      */
-    public ImageFile getImageFile(String fileId)
+    public List<String> saveOtherImages(List<MultipartFile> files)
+            throws IOException
     {
 
-        return imageFileRepo.findById(fileId)
-                .orElseThrow(() -> new ResourceNotFoundException("Image file of id: " + fileId + "does not exist"));
+        List<String> imageUrls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            ImageFile image = new ImageFile();
+            String imageUrl = uploadToS3Bucket(file);
+            image.setImageUrl(imageUrl);
+            imageUrls.add(imageUrl);
+        }
+
+        return imageUrls;
+    }
+
+//    /**
+//     * Gets the list of all image urls queried
+//     * @return list of file urls
+//     */
+//    public List<String> getImages() {
+//
+//        List<String> imageList = new ArrayList<>();
+//        List<ImageFile> images = imageFileRepo.findAll();
+//        for (ImageFile file : images) {
+//            imageList.add(file.getImageUrl());
+//        }
+//
+//        return imageList;
+//    }
+
+    /**
+     * Uploads file to cloud bucket
+     *
+     * @param file the multipart file to be uploaded
+     * @return the url of the uploaded file
+     * @throws IOException i/o exception
+     */
+    private String uploadToS3Bucket(MultipartFile file)
+            throws IOException
+    {
+        if (!file.isEmpty() && file.getOriginalFilename() != null) {
+
+            String fileName = Paths.get(file.getOriginalFilename()).getFileName().toString();
+
+            // define client put request
+            s3Client.putObject(bucketName, fileName, file.getInputStream(), null);
+
+            // return file url
+            return String.format("https://%s.s3.amazonaws.com/%s", bucketName, fileName);
+        }
+        return null;
     }
 }

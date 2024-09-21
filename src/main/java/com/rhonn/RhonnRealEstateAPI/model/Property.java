@@ -25,8 +25,8 @@ public class Property
     private String address;
     private String city;
     private String state;
-    @OneToMany(mappedBy = "prop")
-    private List<ImageFile> propImages;
+    private String mainImage;
+    private List<String> propImages;
     private List<String> features;
     private PropCategory category;
     private PropType type;
@@ -38,7 +38,7 @@ public class Property
     }
 
     public Property(String propName, BigDecimal price, String description,
-            String address, String city, String state, List<ImageFile> propImages,
+            String address, String city, String state, String mainImage, List<String> propImages,
             List<String> features, PropCategory category, PropType type)
     {
         this.id = getId();
@@ -48,6 +48,7 @@ public class Property
         this.address = address;
         this.city = city;
         this.state = state;
+        this.mainImage = mainImage;
         this.propImages = propImages;
         this.features = features;
         this.category = category;
@@ -67,6 +68,7 @@ public class Property
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
+                ", mainImage='" + mainImage + '\'' +
                 ", propImages=" + propImages +
                 ", features=" + features +
                 ", category=" + category +
