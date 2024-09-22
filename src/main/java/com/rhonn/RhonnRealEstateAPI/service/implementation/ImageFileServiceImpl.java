@@ -22,7 +22,6 @@ public class ImageFileServiceImpl
     @Autowired
     ImageFileRepo imageFileRepo;
 
-    @Autowired
     AmazonS3 s3Client;
 
     @Value("${aws.s3.bucket.name}")
@@ -68,21 +67,6 @@ public class ImageFileServiceImpl
 
         return imageUrls;
     }
-
-//    /**
-//     * Gets the list of all image urls queried
-//     * @return list of file urls
-//     */
-//    public List<String> getImages() {
-//
-//        List<String> imageList = new ArrayList<>();
-//        List<ImageFile> images = imageFileRepo.findAll();
-//        for (ImageFile file : images) {
-//            imageList.add(file.getImageUrl());
-//        }
-//
-//        return imageList;
-//    }
 
     /**
      * Uploads file to cloud bucket

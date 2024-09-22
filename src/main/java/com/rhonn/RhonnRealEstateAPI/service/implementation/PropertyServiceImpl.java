@@ -7,13 +7,16 @@ import com.rhonn.RhonnRealEstateAPI.exception.ResourceNotFoundException;
 import com.rhonn.RhonnRealEstateAPI.mapper.PropertyMapper;
 import com.rhonn.RhonnRealEstateAPI.model.Property;
 import com.rhonn.RhonnRealEstateAPI.repo.PropertyRepo;
+import com.rhonn.RhonnRealEstateAPI.service.ImageFileService;
 import com.rhonn.RhonnRealEstateAPI.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,24 +28,31 @@ public class PropertyServiceImpl
     @Autowired
     private PropertyRepo propertyRepo;
 
+    @Autowired
+    private ImageFileService imageFileService;
+
     /**
      * Creates a property
      *
      * @param propertyDTO the information to create property with
      * @return the created property
      */
-    public ResponseEntity<ApiObjectResponse<PropertyDTO>> createProperty(PropertyDTO propertyDTO)
+    public PropertyDTO createProperty(
+            PropertyDTO propertyDTO, MultipartFile mainImage,
+            List<MultipartFile> propImages
+    )
+            throws IOException
     {
 
         Property prop = PropertyMapper.mapToProperty(propertyDTO);
-        PropertyDTO savedProp = PropertyMapper.mapToPropDTO(propertyRepo.save(prop));
-        String propId = savedProp.getId();
+        String imgUrl = imageFileService.saveMainImage(mainImage);    // retrieve main image url
+        List<String> propImagesUrls = imageFileService.saveOtherImages(propImages);   // list of other images urls
 
-        // call function that takes propId, urls of mainImage and propImages and sets them to savedProp
+        // add the `mainImage` and `propImages` to property field
+        prop.setMainImage(imgUrl);
+        prop.setPropImages(propImagesUrls);
 
-        ApiObjectResponse<PropertyDTO> response = new ApiObjectResponse<>("success", HttpStatus.CREATED, savedProp);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return PropertyMapper.mapToPropDTO(propertyRepo.save(prop));
     }
 
     /**
